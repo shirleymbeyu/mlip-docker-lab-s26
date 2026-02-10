@@ -5,11 +5,11 @@ In this lab, you will containerize a machine learning training pipeline and infe
 
 ### Deliverables
 
-**Deliverable 1**: Containerize the training script using the provided Dockerfile template and save the model to a shared volume. Build and run the container to verify model creation. Explain why Docker is useful for reproducibility and portability in ML training scenarios.
+ - [ ] **Deliverable 1**: The training script has been run in a container and the resulting model is saved to a shared volume. Able to explain why Docker is useful for reproducibility and portability in ML training scenarios.
 
-**Deliverable 2**: Containerize the inference service. Complete the Flask app in `server.py` and create a Dockerfile to serve predictions on port 8081. The server should log predictions to a bind-mounted directory. Build, run, and test the prediction endpoint. Explain how containerizing the inference service simplifies deployment and scaling.
+ - [ ] **Deliverable 2**: Containerize the inference service to serve predictions on a specific port and log predictions to a bind-mounted directory. Explain what the Dockerfile is and how it helps containerize the inference service.
 
-**Deliverable 3**: Create `docker-compose.yml` to orchestrate both services with a shared named volume and a bind mount for logs. Show the `./logs/predictions.log` file on your host to the TA and demonstrate that the model persists across `docker compose down` and `docker compose up`. Explain the difference between named volumes and bind mounts, and how Docker Compose manages storage across multiple container services in an ML pipeline.
+ - [ ] **Deliverable 3**: Show the `./logs/predictions.log` file on your host to the TA and demonstrate that the model persists across `docker compose down` and `docker compose up`. Explain the difference between named volumes and bind mounts in Docker.
 
 
 ## Step 0: Setup Docker
