@@ -11,8 +11,13 @@ LOG_PATH = "/app/logs/predictions.log"
 
 model = None
 
-# TODO: Load the trained model from the shared volume. Use joblib.load() with MODEL_PATH
-model = ...
+# DONE: Load the trained model from the shared volume
+try:
+    model = joblib.load(MODEL_PATH)
+    print(f"Model loaded from {MODEL_PATH}")
+except Exception as e:
+    print(f"Warning: Could not load model from {MODEL_PATH}: {e}")
+    model = None
 
 # Wine feature names for reference (13 features):
 # alcohol, malic_acid, ash, alcalinity_of_ash, magnesium, total_phenols,
@@ -22,24 +27,22 @@ model = ...
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
-        # TODO: Get the input array from the request JSON body
-        # The request body should have a key "input" with a list of 13 feature values
+        # DONE: Get the input array from the request JSON body
         data = request.get_json()
-        features = ...
+        features = data["input"]
 
-        # TODO: Convert to numpy array, reshape for single prediction, and predict
-        # HINT: use np.array().reshape(1, -1)
-        prediction = ...
+        # DONE: Convert to numpy array, reshape for single prediction, and predict
+        prediction = model.predict(np.array(features).reshape(1, -1))
 
         # Map prediction to wine class name
         wine_classes = {0: "class_0", 1: "class_1", 2: "class_2"}
         result = wine_classes.get(int(prediction[0]), "unknown")
 
-        # TODO: Log the prediction to the bind-mounted log file
-        # Append a line to LOG_PATH with the timestamp, input features, and prediction result
-        # Example log line: "2026-02-09 12:00:00 | input: [13.2, 1.78, ...] | prediction: class_0"
-
-
+        # DONE: Log the prediction to the bind-mounted log file
+        os.makedirs(os.path.dirname(LOG_PATH), exist_ok=True)
+        with open(LOG_PATH, "a") as log_file:
+            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            log_file.write(f"{timestamp} | input: {features} | prediction: {result}\n")
         return jsonify({"prediction": result})
 
     except Exception as e:
